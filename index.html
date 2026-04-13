@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ALIF UID TOOL PRO</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: #fff;
+}
+
+header {
+    background: #020617;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #38bdf8;
+}
+
+.container {
+    max-width: 700px;
+    margin: 20px auto;
+    background: #111827;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+textarea {
+    width: 100%;
+    height: 120px;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    background: #020617;
+    color: white;
+}
+
+.buttons {
+    margin-top: 10px;
+    text-align: center;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.generate { background: #22c55e; color: black; }
+.refresh { background: #facc15; color: black; }
+.copy { background: #3b82f6; color: white; }
+.check { background: #a855f7; color: white; }
+
+.copy.copied {
+    background: #22c55e;
+}
+
+.tool-box {
+    margin-top: 20px;
+    padding: 10px;
+    background: #020617;
+    border-radius: 8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>ALIF UID TOOL PRO</header>
+
+<div class="container">
+
+<label>Paste Facebook Links:</label>
+<textarea id="input"></textarea>
+
+<div class="buttons">
+    <button class="generate" onclick="generateUID()">Generate</button>
+    <button class="refresh" onclick="refreshPage()">Refresh</button>
+    <button class="copy" id="copyBtn" onclick="copyOutput()">Copy</button>
+    <button class="check" onclick="checkProfiles()">Check Profiles</button>
+</div>
+
+<label>UID Output:</label>
+<textarea id="output"></textarea>
+
+<div class="tool-box">
+    <b>Extra Tools:</b><br>
+    ✔ Quick Profile Open<br>
+    ✔ UID Extractor<br>
+    ✔ Manual Live Check Support<br>
+</div>
+
+</div>
+
+<script>
+
+function generateUID() {
+    let input = document.getElementById("input").value.trim();
+    let links = input.split("\n");
+    let result = "";
+
+    links.forEach(link => {
+        link = link.trim();
+
+        let idMatch = link.match(/id=(\d+)/);
+        let directMatch = link.match(/(\d{6,})/);
+
+        if (idMatch) {
+            result += idMatch[1] + "\n";
+        } else if (directMatch) {
+            result += directMatch[1] + "\n";
+        } else {
+            result += "UID Not Found\n";
+        }
+    });
+
+    document.getElementById("output").value = result;
+}
+
+function refreshPage() {
+    document.getElementById("input").value = "";
+    document.getElementById("output").value = "";
+
+    let btn = document.getElementById("copyBtn");
+    btn.innerText = "Copy";
+    btn.classList.remove("copied");
+}
+
+function copyOutput() {
+    let output = document.getElementById("output");
+
+    if (!output.value.trim()) {
+        alert("Nothing to copy!");
+        return;
+    }
+
+    output.select();
+    document.execCommand("copy");
+
+    let btn = document.getElementById("copyBtn");
+    btn.innerText = "Copied ✅";
+    btn.classList.add("copied");
+}
+
+// Manual profile check (open links)
+function checkProfiles() {
+    let input = document.getElementById("input").value.trim();
+    let links = input.split("\n");
+
+    links.forEach(link => {
+        if (link.trim()) {
+            window.open(link.trim(), "_blank");
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>
